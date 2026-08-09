@@ -18,7 +18,11 @@ export function formatRelativeTime(dateString: string): string {
   if (diffMin < 60) return `${diffMin}m ago`;
   if (diffHour < 24) return `${diffHour}h ago`;
   if (diffDay < 7) return `${diffDay}d ago`;
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
 
 export function generateId(): string {
@@ -33,10 +37,10 @@ export function truncate(text: string, max: number): string {
 }
 
 export const urgencyColor: Record<string, string> = {
-  low: "text-success bg-success/10 border-success/20",
-  moderate: "text-warning bg-warning/10 border-warning/20",
-  high: "text-orange-500 bg-orange-500/10 border-orange-500/20",
-  emergency: "text-destructive bg-destructive/10 border-destructive/20",
+  low: "text-green-600 bg-green-50 border-green-200",
+  moderate: "text-yellow-600 bg-yellow-50 border-yellow-200",
+  high: "text-orange-500 bg-orange-50 border-orange-200",
+  emergency: "text-red-600 bg-red-50 border-red-200",
 };
 
 export const urgencyLabel: Record<string, string> = {
@@ -49,6 +53,7 @@ export const urgencyLabel: Record<string, string> = {
 export function bytesToSize(bytes: number): string {
   const sizes = ["B", "KB", "MB", "GB"];
   if (bytes === 0) return "0 B";
+
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
 }
