@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Bot, FileText, User } from "lucide-react";
 import { ChatMessage } from "@/types";
 import { MarkdownRenderer } from "./markdown-renderer";
-import { Badge } from "@/components/ui/badge";
 import { urgencyColor, urgencyLabel } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +32,12 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
         )}
       </div>
 
-      <div className={cn("flex max-w-[80%] flex-col gap-2", isUser && "items-end")}>
+      <div
+        className={cn(
+          "flex max-w-[80%] flex-col gap-2",
+          isUser && "items-end"
+        )}
+      >
         {message.attachments && message.attachments.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {message.attachments.map((att) =>
@@ -76,10 +80,26 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
           )}
         </div>
 
+        {/* Urgency indicator */}
         {message.urgency && (
-          <Badge variant="outline" className={urgencyColor[message.urgency]}>
-            {urgencyLabel[message.urgency]}
-          </Badge>
+          <div
+            className={cn(
+              "flex items-center gap-2 text-sm font-medium",
+              urgencyColor[message.urgency]
+            )}
+          >
+            <span
+              className={cn(
+                "h-3 w-3 rounded-full",
+                message.urgency === "low" && "bg-green-500",
+                message.urgency === "moderate" && "bg-yellow-500",
+                message.urgency === "high" && "bg-orange-500",
+                message.urgency === "emergency" && "bg-red-500"
+              )}
+            />
+
+            <span>{urgencyLabel[message.urgency]}</span>
+          </div>
         )}
       </div>
     </motion.div>
@@ -88,7 +108,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
 
 function TypingIndicator() {
   return (
-    <div className="flex items-center gap-1 py-1">
+    <div className="flex items-center gap-1">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
